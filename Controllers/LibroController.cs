@@ -48,7 +48,19 @@ namespace lab4Final.Controllers
         // GET: Libro/Create
         public IActionResult Create()
         {
-            ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Id");
+            ViewData["EditorialId"] = new SelectList(_context.Editoriales.Select(e => new
+            {
+                e.Id, NombreConPais = e.Nombre + " (" + e.Pais.Nombre + ")"
+            }),
+            "Id",
+            "NombreConPais"
+            );
+
+            ViewBag.Autores = _context.Autores
+                .Select(a => new
+                {
+                    a.Id, NombreCompleto = a.Nombre + " " + a.Apellido 
+                }).ToList();
             return View();
         }
 
@@ -57,15 +69,35 @@ namespace lab4Final.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,FechaPublicacion,EditorialId")] Libro libro)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,FechaPublicacion,EditorialId")] Libro libro, int AutorId)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(libro);
                 await _context.SaveChangesAsync();
+
+                var autorLibro = new AutorLibro
+                {
+                    LibroId = libro.Id, AutorId = AutorId
+                };
+
+                _context.Add(autorLibro);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Id", libro.EditorialId);
+
+            ViewData["EditorialId"] = new SelectList(_context.Editoriales.Select(e => new
+            {
+                e.Id, NombreConPais = e.Nombre + " (" + e.Pais.Nombre + ")"
+            }),
+            "Id",
+            "NombreConPais"
+            );
+            ViewBag.Autores = _context.Autores.Select(a => new
+                {
+                    a.Id, NombreCompleto = a.Nombre + " " + a.Apellido
+                }).ToList();
             return View(libro);
         }
 

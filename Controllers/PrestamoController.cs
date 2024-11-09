@@ -14,10 +14,12 @@ namespace lab4Final.Controllers
     public class PrestamoController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PrestamoController(ApplicationDbContext context)
+        public PrestamoController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Prestamo
@@ -62,42 +64,104 @@ namespace lab4Final.Controllers
             ViewData["SocioId"] = new SelectList(socios, "Id", "NombreCompleto");
             return View();
         }
+        private async Task<string?> GuardarImagenAsync(IFormFile archivoFoto, string? imagenExistente = null)
+        {
+            if (archivoFoto == null || archivoFoto.Length == 0) return imagenExistente;
+
+            // Ruta destino
+            var pathDestino = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+            Directory.CreateDirectory(pathDestino); // Crear el directorio si no existe
+
+            // Nombre unico para imagen
+            var archivoDestino = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(archivoFoto.FileName);
+
+            // Ruta a guardar
+            var rutaCompletaDestino = Path.Combine(pathDestino, archivoDestino);
+
+            // Guardar la imagen
+            using (var filestream = new FileStream(rutaCompletaDestino, FileMode.Create))
+            {
+                await archivoFoto.CopyToAsync(filestream);
+                if (!string.IsNullOrEmpty(imagenExistente))
+                {
+                    var rutaArchivoViejo = Path.Combine(pathDestino, imagenExistente);
+                    if (System.IO.File.Exists(rutaArchivoViejo))
+                    {
+                        System.IO.File.Delete(rutaArchivoViejo);
+                    }
+                }
+            }
+            return archivoDestino;
+        }
 
         // POST: Prestamo/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SocioId,LibroId,ImagenLibro,FechaPrestamo,FechaDevolucion")] Prestamo prestamo)
+        public async Task<IActionResult> Create([Bind("Id,SocioId,LibroId,ImagenLibro,FechaPrestamo,FechaDevolucion")] Prestamo prestamo, IFormFile imagenLibro)
         {
             if (ModelState.IsValid)
             {
+                prestamo.ImagenLibro = await GuardarImagenAsync(imagenLibro);
                 prestamo.FechaPrestamo = DateTime.Now;
-
                 _context.Add(prestamo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Id", prestamo.LibroId);
-            ViewData["SocioId"] = new SelectList(_context.Socios, "Id", "Id", prestamo.SocioId);
+            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Titulo");
+
+            var socios = _context.Socios.Select(s => new
+            {
+                s.Id,
+                NombreCompleto = s.Nombre + " " + s.Apellido
+            });
+
+            ViewData["SocioId"] = new SelectList(socios, "Id", "NombreCompleto");
             return View(prestamo);
         }
 
         // GET: Prestamo/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,SocioId,LibroId,FechaPrestamo,FechaDevolucion")] Prestamo prestamo, IFormFile imagenLibro)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var prestamo = await _context.Prestamos.FindAsync(id);
-            if (prestamo == null)
+            if (ModelState.IsValid && imagenLibro != null && imagenLibro.Length > 0)
             {
-                return NotFound();
+                try
+                {
+                    if (imagenLibro != null)
+                    {
+                        prestamo.ImagenLibro = await GuardarImagenAsync(imagenLibro);
+                    }
+
+                    _context.Update(prestamo);
+                    await _context.SaveChangesAsync();
+                } catch (DbUpdateConcurrencyException)
+                {
+                    if (!PrestamoExists(prestamo.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Id", prestamo.LibroId);
-            ViewData["SocioId"] = new SelectList(_context.Socios, "Id", "Id", prestamo.SocioId);
+            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Titulo");
+
+            var socios = _context.Socios.Select(s => new
+            {
+                s.Id,
+                NombreCompleto = s.Nombre + " " + s.Apellido
+            });
+
+            ViewData["SocioId"] = new SelectList(socios, "Id", "NombreCompleto");
             return View(prestamo);
         }
 
@@ -133,8 +197,15 @@ namespace lab4Final.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Id", prestamo.LibroId);
-            ViewData["SocioId"] = new SelectList(_context.Socios, "Id", "Id", prestamo.SocioId);
+            ViewData["LibroId"] = new SelectList(_context.Libros, "Id", "Titulo");
+
+            var socios = _context.Socios.Select(s => new
+            {
+                s.Id,
+                NombreCompleto = s.Nombre + " " + s.Apellido
+            });
+
+            ViewData["SocioId"] = new SelectList(socios, "Id", "NombreCompleto");
             return View(prestamo);
         }
 

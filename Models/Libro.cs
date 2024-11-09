@@ -11,9 +11,10 @@ namespace lab4Final.Models
         [Display(Name = "Editorial")]
         public int EditorialId { get; set; }
 
+
 		// Navegación
 		public Editorial? Editorial { get; set; }
 		public ICollection<AutorLibro>? AutorLibros { get; set; }
-		public ICollection<Socio>? Prestamos { get; set; }
+		public ICollection<Prestamo>? Prestamos { get; set; }
 	}
 }

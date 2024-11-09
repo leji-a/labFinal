@@ -23,9 +23,23 @@
                 <span asp-validation-for="FechaPublicacion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EditorialId" class="control-label"></label>
-                <select asp-for="EditorialId" class ="form-control" asp-items="ViewBag.EditorialId"></select>
+                <label for="AutorId">Selecciona un Autor</label>
+                <select class="form-control" id="AutorId" name="AutorId" required>
+                    @foreach (var autor in ViewBag.Autores)
+                    {
+                        <option value="@autor.Id">@autor.NombreCompleto</option>
+                    }
+                </select>
             </div>
+            <div class="form-group">
+                <label for="EditorialId">Editorial</label>
+                <select id="EditorialId" name="EditorialId" class="form-control">
+                    <option value="">Seleccionar Editorial</option>
+                    @foreach (var editorial in ViewData["EditorialId"] as SelectList)
+                    {
+                        <option value="@editorial.Value">@editorial.Text</option>
+                    }
+                </select>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -17,7 +17,49 @@ namespace lab4Final.Controllers
         public PaisController(ApplicationDbContext context)
         {
             _context = context;
+            AddCountriesIfNotExists();
         }
+        private void AddCountriesIfNotExists()
+        {
+            // Lista de países
+            var countries = new List<string>
+            {
+                "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argentina", "Armenia", "Australia",
+                "Austria", "Azerbaiyán", "Bahamas", "Baréin", "Bangladesh", "Barbados", "Bélgica", "Belice", "Benín", "Bielorrusia",
+                "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde",
+                "Camboya", "Camerún", "Canadá", "Chad", "Chile", "China", "Chipre", "Colombia", "Comoras", "Congo", "Corea del Norte",
+                "Corea del Sur", "Costa Rica", "Costa de Marfil", "Croacia", "Cuba", "Dinamarca", "Dominica", "Ecuador", "Egipto", "El Salvador",
+                "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", "Estonia", "Esuatini", "Etiopía",
+                "Fiji", "Filipinas", "Finlandia", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", "Granada", "Guatemala", "Guinea",
+                "Guinea Ecuatorial", "Guinea-Bisáu", "Guyana", "Haití", "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán",
+                "Irlanda", "Islas Marshall", "Islas Salomón", "Israel", "Italia", "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia",
+                "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania",
+                "Luxemburgo", "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Marianas del Norte", "Mauricio",
+                "Mauritania", "México", "Micronesia", "Mónaco", "Mongolia", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger",
+                "Nigeria", "Noruega", "Nueva Zelanda", "Níger", "Omán", "Países Bajos", "Pakistán", "Palaos", "Panamá", "Papúa Nueva Guinea",
+                "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Checa", "República Dominicana", "Reunión", "Rumania",
+                "Rusia", "Ruanda", "Samoa", "San Cristóbal y Nieves", "San Marino", "San Vicente y las Granadinas", "Santo Tomé y Príncipe", "Senegal",
+                "Serbia", "Seychelles", "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Sudáfrica", "Sudán", "Sudán del Sur",
+                "Suecia", "Suiza", "Surinam", "Svalbard", "Siria", "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga",
+                "Trinidad y Tobago", "Tunez", "Turkmenistán", "Turquía", "Tuvalu", "Uganda", "Ukrania", "Uruguay", "Uzbekistán", "Vanuatu",
+                "Vaticano", "Venezuela", "Vietnam", "Yemen", "Yibuti", "Zambia", "Zimbabue"
+            };
+
+            foreach (var countryName in countries)
+            {
+                // Verifica si el país ya existe en la base de datos
+                if (!_context.Paises.Any(p => p.Nombre == countryName))
+                {
+                    // Si no existe, lo agrega
+                    _context.Paises.Add(new Pais { Nombre = countryName });
+                }
+            }
+
+            // Guarda los cambios en la base de datos
+            _context.SaveChanges();
+        }
+
+
 
         // GET: Pais
         public async Task<IActionResult> Index()

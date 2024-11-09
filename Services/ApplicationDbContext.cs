@@ -17,8 +17,17 @@ namespace lab4Final.Services
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AutorLibro>().HasKey(al => new { al.AutorId, al.LibroId });
+
+            modelBuilder.Entity<AutorLibro>()
+                .HasOne(al => al.Autor)
+                .WithMany(a => a.AutorLibros)
+                .HasForeignKey(al => al.AutorId);
+
+            modelBuilder.Entity<AutorLibro>()
+                .HasOne(al => al.Libro)
+                .WithMany(l => l.AutorLibros)
+                .HasForeignKey(al => al.LibroId);
         }
     }
 }

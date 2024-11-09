@@ -48,7 +48,7 @@ namespace lab4Final.Controllers
         // GET: Autor/Create
         public IActionResult Create()
         {
-            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Id");
+            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Nombre");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace lab4Final.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Id", autor.PaisId);
+            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Nombre", autor.PaisId);
             return View(autor);
         }
 
