@@ -9,7 +9,7 @@
 		public DateTime? FechaInscripcion { get; set; }
 		public string? Telefono { get; set; }
 
-		// Navegación
-		public ICollection<Prestamo>? Prestamos { get; set; }
-	}
+        // Navegación
+        public ICollection<Prestamo>? Prestamos { get; set; }
+    }
 }
