@@ -10,9 +10,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FechaPrestamo" />
             <div class="form-group">
                 <label asp-for="SocioId" class="control-label"></label>
                 <select asp-for="SocioId" class="form-control" asp-items="ViewBag.SocioId"></select>
@@ -25,17 +26,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImagenLibro" class="control-label"></label>
-                <input asp-for="ImagenLibro" class="form-control" />
-                <span asp-validation-for="ImagenLibro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaPrestamo" class="control-label"></label>
-                <input asp-for="FechaPrestamo" class="form-control" />
-                <span asp-validation-for="FechaPrestamo" class="text-danger"></span>
+                <input type="file" name="imagenLibro" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.ImagenLibro))
+                {
+                    <img src="/images/@Model.ImagenLibro" class="img-fluid mt-2" style="max-width: 140px; height: 200px; object-fit: cover;" />
+                }
             </div>
             <div class="form-group">
                 <label asp-for="FechaDevolucion" class="control-label"></label>
-                <input asp-for="FechaDevolucion" class="form-control" />
+                <input asp-for="FechaDevolucion" type="date" class="form-control" />
                 <span asp-validation-for="FechaDevolucion" class="text-danger"></span>
             </div>
             <div class="form-group">

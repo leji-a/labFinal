@@ -19,6 +19,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <!--Admin-->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                                aria-expanded="false"> Agregar </a>
@@ -35,10 +36,24 @@
                                 <li>
                                     <a class="dropdown-item" asp-area="" asp-controller="Libro" asp-action="Create">Libro</a>
                                 </li>
-                                <!---
-                                    <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Pais" asp-action="Create">Pais</a>
-                                </li>--->
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false"> Ver </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Socio" asp-action="Index">Socios</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Autor" asp-action="Index">Autores</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Editorial" asp-action="Index">Editoriales</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Libro" asp-action="Index">Libros</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

@@ -82,7 +82,7 @@ namespace lab4Final.Controllers
             {
                 return NotFound();
             }
-            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Id", autor.PaisId);
+            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Nombre", autor.PaisId);
             return View(autor);
         }
 
@@ -118,7 +118,7 @@ namespace lab4Final.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Id", autor.PaisId);
+            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Nombre", autor.PaisId);
             return View(autor);
         }
 

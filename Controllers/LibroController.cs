@@ -22,8 +22,11 @@ namespace lab4Final.Controllers
         // GET: Libro
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Libros.Include(l => l.Editorial);
-            return View(await applicationDbContext.ToListAsync());
+            var libros = await _context.Libros
+                .Include(l => l.Editorial)
+                .ThenInclude(e => e.Pais)
+                .ToListAsync();
+            return View(libros);
         }
 
         // GET: Libro/Details/5
@@ -36,7 +39,9 @@ namespace lab4Final.Controllers
 
             var libro = await _context.Libros
                 .Include(l => l.Editorial)
+                .ThenInclude(e => e.Pais)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (libro == null)
             {
                 return NotFound();
@@ -114,7 +119,13 @@ namespace lab4Final.Controllers
             {
                 return NotFound();
             }
-            ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Id", libro.EditorialId);
+            ViewData["EditorialId"] = new SelectList(_context.Editoriales.Select(e => new
+            {
+                e.Id, NombreConPais = e.Nombre + " (" + e.Pais.Nombre + ")"
+            }),
+            "Id",
+            "NombreConPais"
+            );
             return View(libro);
         }
 
@@ -150,7 +161,13 @@ namespace lab4Final.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Id", libro.EditorialId);
+            ViewData["EditorialId"] = new SelectList(_context.Editoriales.Select(e => new
+            {
+                e.Id, NombreConPais = e.Nombre + " (" + e.Pais.Nombre + ")"
+            }),
+            "Id",
+            "NombreConPais"
+            );
             return View(libro);
         }
 
@@ -163,8 +180,10 @@ namespace lab4Final.Controllers
             }
 
             var libro = await _context.Libros
-                .Include(l => l.Editorial)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            .Include(l => l.Editorial)
+            .ThenInclude(e => e.Pais)
+            .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (libro == null)
             {
                 return NotFound();

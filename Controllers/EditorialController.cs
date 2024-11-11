@@ -48,7 +48,7 @@ namespace lab4Final.Controllers
         // GET: Editorial/Create
         public IActionResult Create()
         {
-            ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Nombre");
+            ViewData["PaisId"] = new SelectList(_context.Paises, "Id", "Nombre");
             return View();
         }
 

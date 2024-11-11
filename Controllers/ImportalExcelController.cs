@@ -39,6 +39,7 @@ namespace lab4Final.Controllers
                         DNI = fila.Cell(3).GetValue<string>(),
                         Telefono = fila.Cell(4).GetValue<string>()
                     };
+                    socio.FechaInscripcion = DateTime.Now;
                     socios.Add(socio);
                 }
                 _context.Socios.AddRange(socios);
@@ -49,7 +50,7 @@ namespace lab4Final.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return RedirectToAction("Index", "Prestamos");
+            return RedirectToAction("Index", "Prestamo");
         }
     }
 }

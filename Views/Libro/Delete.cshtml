@@ -21,13 +21,13 @@
             @Html.DisplayNameFor(model => model.FechaPublicacion)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaPublicacion)
+            @Model.FechaPublicacion.ToString("dd/MM/yyyy")
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Editorial)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Editorial.Id)
+            @($"{Model.Editorial.Nombre} ({Model.Editorial.Pais.Nombre})")
         </dd>
     </dl>
     
