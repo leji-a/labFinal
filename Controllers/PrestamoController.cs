@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using lab4Final.Models;
 using lab4Final.Services;
 using Microsoft.AspNetCore.Hosting;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace lab4Final.Controllers
 {
@@ -23,10 +25,28 @@ namespace lab4Final.Controllers
         }
 
         // GET: Prestamo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscarPrestamo, int? page)
         {
-            var applicationDbContext = _context.Prestamos.Include(p => p.Libro).Include(p => p.Socio);
-            return View(await applicationDbContext.ToListAsync());
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
+
+            var prestamos = from prestamo in _context.Prestamos
+                            .Include(p => p.Libro)
+                            .Include(p => p.Socio)
+                            select prestamo;
+
+            // Filtrar los préstamos según el término de búsqueda
+            if (!string.IsNullOrEmpty(buscarPrestamo))
+            {
+                prestamos = prestamos.Where(s => s.Libro.Titulo.Contains(buscarPrestamo) || 
+                                                 s.Socio.Nombre.Contains(buscarPrestamo) || 
+                                                 s.Socio.Apellido.Contains(buscarPrestamo));
+            }
+
+            // Más nuevo se ve primero
+            var prestamosPaginados = prestamos.OrderByDescending(p => p.Id).ToPagedList(pageNumber, pageSize);
+
+            return View(prestamosPaginados);
         }
 
         // GET: Prestamo/Details/5

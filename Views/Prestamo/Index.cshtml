@@ -1,4 +1,6 @@
-﻿@model IEnumerable<lab4Final.Models.Prestamo>
+﻿@model IPagedList<lab4Final.Models.Prestamo>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @{
     ViewData["Title"] = "Index";
@@ -9,49 +11,74 @@
 <p>
     <a asp-action="Create">Crear préstamo</a>
 </p>
-<table class="table">
+<form asp-controller="Prestamo" asp-action="Index" class="d-flex align-items-center mb-3">
+    <input type="text" name="buscarPrestamo" id="buscarPrestamo" class="form-control form-control-sm me-2" placeholder="Nombre del producto" oninput="filterPrestamos()"/>
+</form>
+<table class="table" id="prestamoTable">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagenLibro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Libro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Socio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaPrestamo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaDevolucion)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.First().ImagenLibro)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Libro)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Socio)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FechaPrestamo)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FechaDevolucion)</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td><img src="/images/@item.ImagenLibro" class="img-fluid" style="max-width: 100px; height: 150px; object-fit: cover;" /></td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Libro.Titulo)
-            </td>
-            <td>
-                @($"{item.Socio.Nombre} {item.Socio.Apellido}")
-            </td>
-            <td>
-                @item.FechaPrestamo.ToString("dd/MM/yyyy")
-            </td>
-            <td>
-                @(item.FechaDevolucion?.ToString("dd/MM/yyyy"))
-            </td>
+            <td class="libro">@Html.DisplayFor(modelItem => item.Libro.Titulo)</td>
+            <td class="socio">@($"{item.Socio.Nombre} {item.Socio.Apellido}")</td>
+            <td>@item.FechaPrestamo.ToString("dd/MM/yyyy")</td>
+            <td>@(item.FechaDevolucion?.ToString("dd/MM/yyyy"))</td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+<div class="pagination-container mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+    {
+        UlElementClasses = new[] { "pagination", "justify-content-center" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        ActiveLiElementClass = "active",
+        LinkToNextPageFormat = "Siguiente",
+        LinkToFirstPageFormat = "Primera",
+        LinkToLastPageFormat = "Última",
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        Display = PagedListDisplayMode.Always
+    })
+</div>
+
+<script>
+    function filterPrestamos() {
+        const input = document.getElementById('buscarPrestamo');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('prestamoTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const libroCell = rows[i].getElementsByClassName('libro')[0];
+            const socioCell = rows[i].getElementsByClassName('socio')[0];
+            const libroText = libroCell.textContent || libroCell.innerText;
+            const socioText = socioCell.textContent || socioCell.innerText;
+
+            if (libroText.toLowerCase().indexOf(filter) > -1 || socioText.toLowerCase().indexOf(filter) > -1) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>
