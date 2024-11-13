@@ -1,9 +1,11 @@
 ﻿using lab4Final.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace lab4Final.Services
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base (options) { }
 
@@ -17,6 +19,8 @@ namespace lab4Final.Services
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<AutorLibro>().HasKey(al => new { al.AutorId, al.LibroId });
 
             modelBuilder.Entity<AutorLibro>()
