@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using lab4Final.Models;
 using lab4Final.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace lab4Final.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AutorLibroController : Controller
     {
         private readonly ApplicationDbContext _context;

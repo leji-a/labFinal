@@ -6,16 +6,21 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center my-4">Lista de Préstamos</h1>
 
-<p>
-    <a asp-action="Create">Crear préstamo</a>
-</p>
 <form asp-controller="Prestamo" asp-action="Index" class="d-flex align-items-center mb-3">
-    <input type="text" name="buscarPrestamo" id="buscarPrestamo" class="form-control form-control-sm me-2" placeholder="Nombre del producto" oninput="filterPrestamos()"/>
+    <input type="text" name="buscarPrestamo" id="buscarPrestamo" class="form-control form-control-sm me-2" placeholder="Buscar por nombre del socio o título del libro" oninput="filterPrestamos()" />
 </form>
-<table class="table" id="prestamoTable">
-    <thead>
+
+@if (User.IsInRole("Admin"))
+{
+    <p class="text-center">
+        <a asp-action="Create" class="btn btn-success">Crear Préstamo</a>
+    </p>
+}
+
+<table class="table table-striped table-bordered" id="prestamoTable">
+    <thead class="table-light">
         <tr>
             <th>@Html.DisplayNameFor(model => model.First().ImagenLibro)</th>
             <th>@Html.DisplayNameFor(model => model.First().Libro)</th>
@@ -26,39 +31,39 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td><img src="/images/@item.ImagenLibro" class="img-fluid" style="max-width: 100px; height: 150px; object-fit: cover;" /></td>
-            <td class="libro">@Html.DisplayFor(modelItem => item.Libro.Titulo)</td>
-            <td class="socio">@($"{item.Socio.Nombre} {item.Socio.Apellido}")</td>
-            <td>@item.FechaPrestamo.ToString("dd/MM/yyyy")</td>
-            <td>@(item.FechaDevolucion?.ToString("dd/MM/yyyy"))</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">
+                    <img src="/images/@item.ImagenLibro" class="img-fluid" style="max-width: 100px; height: auto; object-fit: contain;" />
+                </td>
+                <td class="libro">@Html.DisplayFor(modelItem => item.Libro.Titulo)</td>
+                <td class="socio">@($"{item.Socio.Nombre} {item.Socio.Apellido}")</td>
+                <td>@item.FechaPrestamo.ToString("dd/MM/yyyy")</td>
+                <td>@(item.FechaDevolucion?.ToString("dd/MM/yyyy"))</td>
+                
+                    <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
+                    </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 <div class="pagination-container mt-4">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-    {
-        UlElementClasses = new[] { "pagination", "justify-content-center" },
-        LiElementClasses = new[] { "page-item" },
-        PageClasses = new[] { "page-link" },
-        ActiveLiElementClass = "active",
-        LinkToNextPageFormat = "Siguiente",
-        LinkToFirstPageFormat = "Primera",
-        LinkToLastPageFormat = "Última",
-        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-        DisplayLinkToLastPage = PagedListDisplayMode.Always,
-        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-        Display = PagedListDisplayMode.Always
-    })
+{
+    UlElementClasses = new[] { "pagination", "justify-content-center" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    ActiveLiElementClass = "active",
+    Display = PagedListDisplayMode.Always
+})
 </div>
 
 <script>

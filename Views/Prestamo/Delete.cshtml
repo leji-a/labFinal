@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
+@if (User.IsInRole("Admin"))
+{
 <h1>Delete Prestamo</h1>
 
 <div>
@@ -36,3 +37,4 @@
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
+}

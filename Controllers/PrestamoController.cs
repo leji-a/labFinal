@@ -29,7 +29,8 @@ namespace lab4Final.Controllers
         {
             int pageSize = 5;
             int pageNumber = page ?? 1;
-
+            if (pageNumber < 1) pageNumber = 1;
+            
             var prestamos = from prestamo in _context.Prestamos
                             .Include(p => p.Libro)
                             .Include(p => p.Socio)

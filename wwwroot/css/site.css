@@ -1,3 +1,4 @@
+/* Tamaño de fuente */
 html {
   font-size: 14px;
 }
@@ -8,10 +9,25 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* Colores personalizados de la paleta */
+:root {
+    --bg: #282828;
+    --bg1: #3c3836;
+    --bg2: #504945;
+    --bg3: #665c54;
+    --bg4: #7c6f64;
+    --fg: #fbf1c7;
+    --red: #cc241d;
+    --orange: #d65d0e;
+    --yellow: #fabd2f;
+    --green: #b8bb26;
+    --blue: #458588;
+    --purple: #b16286;
+    --aqua: #689d6a;
+    --gray: #928374;
 }
 
+/* Estilos base */
 html {
   position: relative;
   min-height: 100%;
@@ -19,4 +35,99 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* Estilos para la barra de navegación */
+.navbar {
+  background-color: var(--bg1);
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: var(--fg);
+}
+
+.navbar .navbar-toggler {
+  background-color: var(--bg2);
+}
+
+.dropdown-menu {
+  background-color: var(--bg3);
+}
+
+.dropdown-item {
+  color: var(--fg);
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg4);
+  color: var(--fg);
+}
+
+/* Enlaces */
+a {
+  color: var(--yellow);
+}
+
+a:hover {
+  color: var(--aqua);
+}
+
+/* Botones */
+.btn {
+  background-color: var(--blue);
+  border-color: var(--blue);
+  color: var(--fg);
+}
+
+.btn:hover {
+  background-color: var(--aqua);
+  border-color: var(--aqua);
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--blue);
+}
+
+/* Estilos para el pie de página */
+.footer {
+  background-color: var(--bg1);
+  color: var(--fg);
+}
+
+/* Bordes */
+.border-top {
+  border-top: 1px solid var(--gray);
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--gray);
+}
+
+/* Tamaño de encabezados */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--yellow);
+}
+
+/* Formularios */
+.form-control {
+  background-color: var(--bg2);
+  color: var(--fg);
+}
+
+.form-control::placeholder {
+  color: var(--gray);
+}
+
+tbody tr td {
+  color: var(--fg);
+}
+
+table {
+    border-collapse: collapse;
+}
+table th, table td, table tr {
+    border: none;
 }
