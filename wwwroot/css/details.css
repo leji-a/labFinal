@@ -1,0 +1,69 @@
+/* Base styles */
+html {
+    font-size: 16px; /* Base font size */
+    font-family: Arial, sans-serif; /* Set a default font */
+}
+
+/* Details container */
+.details-container {
+    background-color: #3c3836;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Image */
+.details-image {
+    max-width: 300px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    margin-left: 300px;
+}
+
+/* Details table */
+.details-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.details-info dt {
+    font-weight: bold;
+    color: #fabd2f;
+}
+
+.details-info dd {
+    margin: 0;
+}
+
+/* Links */
+a {
+    color: #fabd2f;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #458588;
+    text-decoration: underline;
+}
+
+/* Responsive design (optional) */
+@media (min-width: 768px) {
+    .details-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .details-info {
+        flex: 1;
+        margin-left: 20px;
+    }
+}
+  

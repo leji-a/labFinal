@@ -1,0 +1,121 @@
+/* Tamaño de fuente base */
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Variables de color personalizadas */
+:root {
+    --bg: #282828;
+    --bg1: #3c3836;
+    --bg2: #504945;
+    --bg3: #665c54;
+    --bg4: #7c6f64;
+    --fg: #fbf1c7;
+    --red: #cc241d;
+    --orange: #d65d0e;
+    --yellow: #fabd2f;
+    --green: #b8bb26;
+    --blue: #458588;
+    --purple: #b16286;
+    --aqua: #689d6a;
+    --gray: #928374;
+}
+
+/* Estilos para el contenedor principal */
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* Título */
+h1 {
+    color: var(--yellow);
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Formulario */
+.form-group label {
+    color: var(--yellow);
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    background-color: var(--bg2);
+    color: var(--fg);
+    border: 1px solid var(--bg3);
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-group input[type="submit"] {
+    background-color: var(--blue);
+    border-color: var(--blue);
+    color: var(--fg);
+    padding: 8px 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.form-group input[type="submit"]:hover {
+    background-color: var(--aqua);
+    border-color: var(--aqua);
+}
+
+/* Mensaje de validación */
+.text-danger {
+    color: var(--red);
+}
+
+/* Link de regreso */
+div > a {
+    color: var(--yellow);
+    text-decoration: none;
+}
+
+div > a:hover {
+    color: var(--aqua);
+    text-decoration: underline;
+}
+
+/* Estilos para el contenedor del formulario */
+.row {
+    background-color: var(--bg1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Bordes de tabla */
+table {
+    border-collapse: collapse;
+}
+
+table th, table td, table tr {
+    border: none;
+}
+
+/* Estilos para las áreas de foco */
+.btn:focus, 
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--blue);
+}
+
+
+.col-md-4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    margin: 0 auto; /* Centra el div horizontalmente */
+}

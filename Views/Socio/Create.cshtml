@@ -39,13 +39,18 @@
                 <input type="submit" value="Importar" class="btn btn-primary" asp-controller="ImportarExcel" asp-action="Index" />
             </div>
         </form>
+        
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Inicio</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/create.css" />
 }

@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - lab4Final</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -72,7 +73,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            Footer
+            <p>&copy; 2024 Alejo Cabaña - Todos los derechos reservados.</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

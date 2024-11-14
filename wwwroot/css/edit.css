@@ -1,0 +1,25 @@
+/* Estilos para la vista de edición de préstamos */
+.edit-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Espacio entre la imagen y el formulario */
+    justify-content: center;
+    background-color: #3c3836;
+    padding: 20px;
+}
+
+.edit-image {
+    max-width: 140px; /* Ancho máximo de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para la imagen */
+}
+
+.form-group {
+    flex: 1;
+}
+
+/* Estilo para el botón de guardar */
+.save {
+    margin-top: 9px;
+}

@@ -1,16 +1,22 @@
 ﻿@model lab4Final.Models.Prestamo
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar prestamo";
 }
+
 @if (User.IsInRole("Admin"))
 {
-<h1>Edit</h1>
+<h1>Editar prestamo</h1>
 
-<h4>Prestamo</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="edit-container">
+    <div>
+        @if (!string.IsNullOrEmpty(Model.ImagenLibro))
+        {
+            <img src="/images/@Model.ImagenLibro" class="edit-image" alt="Imagen del libro" />
+        }
+    </div>
+    <div class="row">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -28,10 +34,6 @@
             <div class="form-group">
                 <label asp-for="ImagenLibro" class="control-label"></label>
                 <input type="file" name="imagenLibro" class="form-control" />
-                @if (!string.IsNullOrEmpty(Model.ImagenLibro))
-                {
-                    <img src="/images/@Model.ImagenLibro" class="img-fluid mt-2" style="max-width: 140px; height: 200px; object-fit: cover;" />
-                }
             </div>
             <div class="form-group">
                 <label asp-for="FechaDevolucion" class="control-label"></label>
@@ -39,7 +41,7 @@
                 <span asp-validation-for="FechaDevolucion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary save" />
             </div>
         </form>
     </div>
@@ -49,6 +51,11 @@
     <a asp-action="Index">Back to List</a>
 </div>
 }
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/edit.css" />
 }
